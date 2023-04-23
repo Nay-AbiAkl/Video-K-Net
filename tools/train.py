@@ -5,6 +5,7 @@ import os.path as osp
 import time
 import warnings
 
+import git
 import mmcv
 import torch
 import torch.distributed as dist
@@ -15,7 +16,6 @@ from mmdet import __version__
 from mmdet.apis import set_random_seed
 from mmdet.datasets import build_dataset
 from mmdet.models import build_detector
-
 from mmdet.utils import collect_env, get_root_logger
 
 from external.train import train_detector
@@ -148,16 +148,12 @@ def main():
 
     # Added in PansegMM
     # Log the git hash info to video_knet_vis the experiments
-    logger.info(
-        "The repo is : https://github.com/lxtGH/PanopticSegMM/tree/{}/".format(
-            get_git_hash()
-        )
-    )
-    logger.info(
-        "The config is : https://github.com/lxtGH/PanopticSegMM/tree/{}/{}".format(
-            get_git_hash(), args.config
-        )
-    )
+    # logger.info(
+    #     "The repo is : https://github.com/lxtGH/PanopticSegMM/tree/{}/".format(
+    #         get_git_hash()
+    #     )
+    # )
+    logger.info("The config is : ", args.config)
 
     # init the meta dict to record some important information such as
     # environment info and seed, which will be logged
@@ -199,9 +195,15 @@ def main():
     if cfg.checkpoint_config is not None:
         # save mmdet version, config file content and class names in
         # checkpoints as meta data
+        path = "./Video-K-Net/"
+        repo = git.Repo(path, search_parent_directories=True)
+        sha = repo.head.object.hexsha
         cfg.checkpoint_config.meta = dict(
-            mmdet_version=__version__ + get_git_hash()[:7], CLASSES=datasets[0].CLASSES
+            mmdet_version=__version__ + sha[:7], CLASSES=datasets[0].CLASSES
         )
+        # cfg.checkpoint_config.meta = dict(
+        #     mmdet_version=__version__ + get_git_hash()[:7], CLASSES=datasets[0].CLASSES
+        # )
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
     if args.detect_anomaly:
