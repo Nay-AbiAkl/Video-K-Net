@@ -8,7 +8,12 @@ import warnings
 import mmcv
 import torch
 import torch.distributed as dist
-from mmcv.runner.dist_utils import get_dist_info, init_dist
+
+try:
+    from mmcv.runner.dist_utils import get_dist_info, init_dist
+except:
+    from mmcv.runner.dist_utils import get_dist_info, init_dist
+
 from mmdet import __version__
 from mmdet.apis import set_random_seed
 from mmdet.datasets import build_dataset
