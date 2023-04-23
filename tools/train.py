@@ -8,19 +8,14 @@ import warnings
 import mmcv
 import torch
 import torch.distributed as dist
-
-try:
-    from mmcv.runner.dist_utils import get_dist_info, init_dist
-except:
-    from mmcv.runner.dist_utils import get_dist_info, init_dist
-
+from mmcv import Config, DictAction
+from mmcv.runner import get_dist_info, init_dist
+from mmcv.utils import get_git_hash
 from mmdet import __version__
 from mmdet.apis import set_random_seed
 from mmdet.datasets import build_dataset
 from mmdet.models import build_detector
 from mmdet.utils import collect_env, get_root_logger
-from mmengine import get_git_hash
-from mmengine.config import Config, DictAction
 
 from external.train import train_detector
 
