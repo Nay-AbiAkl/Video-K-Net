@@ -119,7 +119,7 @@ class CityscapesSTEP:
                 "inst_map": os.path.join(
                     self.gt_dir,
                     get_idx[0],
-                    "{}_{:06d}_{:06d}_gtFine_instanceIds.png".format(*get_idx),
+                    "{}_{:06d}_{:06d}_gtFine_instanceTrainIds.png".format(*get_idx),
                 ),
             }
         }
