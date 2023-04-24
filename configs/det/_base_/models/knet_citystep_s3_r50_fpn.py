@@ -25,7 +25,7 @@ model = dict(
         out_channels=256,
         start_level=0,
         add_extra_convs="on_input",
-        num_outs=4,
+        num_outs=8,
     ),
     rpn_head=dict(
         type="ConvKernelHead",
