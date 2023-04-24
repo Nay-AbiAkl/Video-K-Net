@@ -68,7 +68,7 @@ model = dict(
         feat_transform_cfg=None,
         loss_rank=dict(type="CrossEntropyLoss", use_sigmoid=False, loss_weight=0.1),
         loss_seg=dict(
-            type="FocalLoss", use_sigmoid=True, gamma=2.0, alpha=0.25, loss_weight=1.0
+            type="FocalLoss", use_sigmoid=False, gamma=2.0, alpha=0.25, loss_weight=1.0
         ),
         loss_mask=dict(type="CrossEntropyLoss", use_sigmoid=True, loss_weight=1.0),
         loss_dice=dict(type="DiceLoss", loss_weight=4.0),
@@ -119,7 +119,7 @@ model = dict(
                 loss_dice=dict(type="DiceLoss", loss_weight=4.0),
                 loss_cls=dict(
                     type="FocalLoss",
-                    use_sigmoid=True,
+                    use_sigmoid=False,
                     gamma=2.0,
                     alpha=0.25,
                     loss_weight=2.0,
