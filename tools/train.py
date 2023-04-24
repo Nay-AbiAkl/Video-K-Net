@@ -153,7 +153,7 @@ def main():
     #         get_git_hash()
     #     )
     # )
-    logger.info("The config is : ", args.config)
+    # logger.info("The config is : ", args.config)
 
     # init the meta dict to record some important information such as
     # environment info and seed, which will be logged
