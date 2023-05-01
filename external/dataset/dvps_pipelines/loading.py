@@ -204,8 +204,6 @@ class LoadAnnotationsDirect:
                 gt_labels,
                 list(map(lambda x: x not in self.cherry, gt_labels)),
             )
-            print("cherry ", self.cherry, flush=True)
-            print("gt labels ", gt_labels, flush=True)
             gt_labels = np.array(list(map(lambda x: self.cherry.index(x), gt_labels))) if len(gt_labels) > 0 else []
 
         if len(gt_labels) == 0:
