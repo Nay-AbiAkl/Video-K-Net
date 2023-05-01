@@ -51,9 +51,9 @@ class KITTISTEPDVPSDataset:
                  with_depth: bool = False
                  ):
         assert data_root is not None
-        data_root = os.path.expanduser(data_root)
-        video_seq_dir = os.path.join(data_root, 'video_sequence', split)
-        assert os.path.exists(video_seq_dir)
+        data_root = data_root
+        video_seq_dir = "/home/nabiakl/Video-K-Net/data/kitti-step/video_sequence/" + split
+        #assert os.path.exists(video_seq_dir)
         assert 'leftImg8bit' not in video_seq_dir
 
         self.num_thing_classes = 2
@@ -431,7 +431,7 @@ if __name__ == '__main__':
             dict(type='ConcatVideoReferences'),
             dict(type='SeqDefaultFormatBundle', ref_prefix='ref'),
         ],
-        data_root=os.path.expanduser('~/datasets/kitti-step'),
+        data_root='home/nabiakl/Video-K-Net/data/kitti-step/',
         split='val',
         ref_seq_index=[-1, 1],
         with_depth=True,

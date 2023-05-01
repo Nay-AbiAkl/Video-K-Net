@@ -142,7 +142,7 @@ img_norm_cfg = dict(
 
 train_pipeline = [
     dict(type='LoadMultiImagesDirect'),
-    dict(type='LoadMultiAnnotationsDirect', with_depth=False, divisor=-1, cherry_pick=True, cherry=[11, 13]),
+    dict(type='LoadMultiAnnotationsDirect', with_depth=False, divisor=-1, cherry_pick=False, cherry=[11, 13]),
     dict(type='SeqResizeWithDepth', img_scale=(384, 1248), ratio_range=[0.5, 2.0], keep_ratio=True),
     dict(type='SeqFlipWithDepth', flip_ratio=0.5),
     dict(type='SeqRandomCropWithDepth', crop_size=(384, 1248), share_params=True),
