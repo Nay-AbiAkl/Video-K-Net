@@ -117,7 +117,7 @@ class LoadAnnotationsDirect:
             dict: The dict contains loaded image and meta information.
             'depth_fields' : the depth fields for supporting depth aug
         """
-
+        
         if self.with_depth:
             depth = mmcv.imread(results['depth'], flag='unchanged').astype(np.float32) / 256.
             del results['depth']
@@ -139,6 +139,7 @@ class LoadAnnotationsDirect:
             gt_semantic_seg = id_map[..., 0].astype(np.float32)
             inst_map = id_map[..., 1].astype(np.float32) * 256 + id_map[..., 2].astype(np.float32)
             ps_id = gt_semantic_seg * local_divisor + inst_map
+            
             del results['ann']
         else:
             ps_id = mmcv.imread(results['ann'], flag='unchanged').astype(np.float32)
@@ -176,6 +177,7 @@ class LoadAnnotationsDirect:
         gt_instance_ids = np.delete(gt_instance_ids, gt_labels == no_obj_class)
         gt_labels = np.delete(gt_labels, gt_labels == no_obj_class)
         if results['is_instance_only'] and not self.cherry_pick:
+            
             gt_masks.masks = np.delete(
                 gt_masks.masks,
                 (gt_labels >= results['thing_upper']) | (gt_labels < results['thing_lower']),
@@ -200,10 +202,14 @@ class LoadAnnotationsDirect:
                 gt_instance_ids,
                 list(map(lambda x: x not in self.cherry, gt_labels)),
             )
+            print("cherry pick before ", self.cherry, flush=True)
+            print("gt labels before ", gt_labels, flush=True) 
             gt_labels = np.delete(
                 gt_labels,
                 list(map(lambda x: x not in self.cherry, gt_labels)),
             )
+            print("cherry pick after ", self.cherry, flush=True)
+            print("gt labels after ", gt_labels, flush=True)
             gt_labels = np.array(list(map(lambda x: self.cherry.index(x), gt_labels))) if len(gt_labels) > 0 else []
 
         if len(gt_labels) == 0:
@@ -233,4 +239,5 @@ class LoadMultiAnnotationsDirect(LoadAnnotationsDirect):
             if _results is None:
                 return None
             outs.append(_results)
+             
         return outs
