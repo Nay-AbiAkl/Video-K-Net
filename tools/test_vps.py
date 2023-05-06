@@ -259,7 +259,7 @@ def main():
     # Inference the sequence
     outputs, pred_pans_2ch = single_gpu_test(model, data_loader, args.show, args.show_dir,
                                              args.show_score_thr, with_semantic_input=args.semantic,
-                                             rescale_depth=args.rescale_depth, with_seq=args.with_seq)
+                                             rescale_depth=args.rescale_depth, with_seq=True)
     print("==>Inference Depth VPS Done!")
 
     # Evaluation Part

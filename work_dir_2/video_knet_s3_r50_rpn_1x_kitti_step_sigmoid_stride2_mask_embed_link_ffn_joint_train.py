@@ -15,7 +15,7 @@ checkpoint_config = dict(interval=1)
 log_config = dict(interval=50, hooks=[dict(type='TextLoggerHook')])
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
-load_from = '/home/nabiakl/Video-K-Net/work_dir/knet_city_step_pan_r50.pth'
+load_from = '/home/nabiakl/Video-K-Net/work_dir/epoch_8.pth'
 resume_from = None
 workflow = [('train', 1)]
 num_stages = 3
@@ -42,8 +42,8 @@ model = dict(
         in_channels=[256, 512, 1024, 2048],
         out_channels=256,
         start_level=0,
-        add_extra_convs='on_input',
-        num_outs=4),
+        add_extra_convs='on_output',
+        num_outs=8),
     rpn_head=dict(
         type='ConvKernelHead',
         num_classes=19,
