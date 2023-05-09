@@ -15,3 +15,6 @@ python $(dirname "$0")/test_dvps.py $CONFIG $CHECKPOINT --eval dummy --show-dir 
 
 PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
 python $(dirname "$0")/eval_dstq_step.py $LOG
+
+PYTHONPATH="$(dirname $0)/..":$PYTHONPATH \
+python $(dirname "$0")/eval_dvpq_step.py $LOG
