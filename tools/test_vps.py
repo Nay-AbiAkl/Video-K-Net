@@ -26,7 +26,7 @@ def single_gpu_test(
     show_score_thr=0.3,
     with_semantic_input=False,
     rescale_depth=False,
-    with_seq=False,
+    with_seq=True,
 ):
     if out_dir is None:
         out_dir = "./out"

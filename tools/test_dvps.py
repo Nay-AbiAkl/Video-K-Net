@@ -304,7 +304,7 @@ def main():
         args.show_score_thr,
         with_semantic_input=args.semantic,
         rescale_depth=args.rescale_depth,
-        with_seq=args.with_seq,
+        with_seq=True,
     )
     print("==>Inference Depth VPS Done!")
 
