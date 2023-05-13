@@ -15,7 +15,7 @@ args = parser.parse_args()
 eval_frames = args.eval_frames
 pred_dir_all = os.path.join(args.result_path, "panoptic")
 depth_dir_all = os.path.join(args.result_path, "depth")
-gt_dir = "/home/mahassan/kitti_out/video_sequence/val/"
+gt_dir = "/home/mahassan/waymo_out/video_sequence/val/"
 depth_thres = args.depth_thres
 
 
