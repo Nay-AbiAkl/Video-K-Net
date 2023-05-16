@@ -97,9 +97,7 @@ def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
         gt_dep_names = None
 
     for seq_id in seq_ids:
-        pred_name_panoptic = list(
-            mmcv.scandir(os.path.join(result_dir, "panoptic", str(seq_id)))
-        )
+        pred_name_panoptic = list(mmcv.scandir(os.path.join(result_dir, "panoptic")))
         pred_ins_names = sorted(list(filter(lambda x: "ins" in x, pred_name_panoptic)))
         pred_cls_names = sorted(list(filter(lambda x: "cat" in x, pred_name_panoptic)))
         if with_depth:
@@ -134,9 +132,9 @@ def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
         ):
             prog_bar.update()
             updater(
-                os.path.join(result_dir, "panoptic", str(seq_id), pred_ins_name),
-                os.path.join(result_dir, "panoptic", str(seq_id), pred_cls_name),
-                os.path.join(result_dir, "depth", str(seq_id), pred_dep_name)
+                os.path.join(result_dir, "panoptic", pred_ins_name),
+                os.path.join(result_dir, "panoptic", pred_cls_name),
+                os.path.join(result_dir, "depth", pred_dep_name)
                 if pred_dep_name is not None
                 else None,
                 os.path.join(gt_dir, gt_pan_seq_name),
@@ -158,6 +156,6 @@ if __name__ == "__main__":
     eval_dstq(
         result_path,
         os.path.join(gt_path, "video_sequence", split),
-        [2, 6, 7, 8, 10, 13, 14, 16, 18],
+        ["037765", "093264", "112983"],
         False,
     )

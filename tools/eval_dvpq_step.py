@@ -167,7 +167,7 @@ def main():
     things_index[11] = True
     things_index[13] = True
 
-    for i in [2, 6, 7, 8, 10, 13, 14, 16, 18]:
+    for i in ["037765", "093264", "112983"]:
         if args.depth_thres > 0:
             depth_dir = os.path.join(depth_dir_all, str(i))
             depth_pred_names = os.scandir(depth_dir)
@@ -177,7 +177,7 @@ def main():
             ]
             depth_pred_names = sorted(depth_pred_names)
 
-        pred_dir = os.path.join(pred_dir_all, str(i))
+        pred_dir = os.path.join(pred_dir_all)
         pred_names = os.scandir(pred_dir)
         pred_names = [os.path.join(pred_dir, name.name) for name in pred_names]
         cat_pred_names = [name for name in pred_names if name.endswith("cat.png")]
