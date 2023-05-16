@@ -599,10 +599,6 @@ class VideoKNetQuansiEmbedFCJointTrain(BaseDetector):
             self.obj_feats_memory = None
             self.x_feats_memory = None
             self.mask_preds_memory = None
-            print("fid", fid)
-
-        print("isfirst", is_first)
-        print("fid", fid)
 
         # wheter to link the previous
         if self.link_previous:
