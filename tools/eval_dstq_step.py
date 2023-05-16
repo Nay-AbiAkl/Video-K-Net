@@ -107,12 +107,10 @@ def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
             pred_dep_names = sorted(pred_name_depth)
         else:
             pred_dep_names = [None] * len(pred_ins_names)
-        gt_pan_seq_names = list(
-            filter(lambda x: x.startswith("{:06d}".format(seq_id)), gt_pan_names)
-        )
+        gt_pan_seq_names = list(filter(lambda x: x.startswith(seq_id), gt_pan_names))
         if with_depth:
             gt_dep_seq_names = list(
-                filter(lambda x: x.startswith("{:06d}".format(seq_id)), gt_dep_names)
+                filter(lambda x: x.startswith(seq_id), gt_dep_names)
             )
         else:
             gt_dep_seq_names = [None] * len(gt_pan_seq_names)
