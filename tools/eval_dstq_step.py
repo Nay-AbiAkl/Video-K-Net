@@ -54,6 +54,11 @@ def updater(
 
     valid_mask_seg = gt_cls != 255
 
+    print("valid_mask_seg", valid_mask_seg.shape, valid_mask_seg.dtype)
+    print("pred_cls", pred_cls.shape, pred_cls.dtype)
+    print("pred_ins", pred_ins.shape, pred_ins.dtype)
+    print("gt_cls", gt_cls.shape, gt_cls.dtype)
+    print("gt_ins", gt_ins.shape, gt_ins.dtype)
     pred_masked_ps = pred_cls[valid_mask_seg] * (2**16) + pred_ins[valid_mask_seg]
     gt_masked_ps = gt_cls[valid_mask_seg] * (2**16) + gt_ins[valid_mask_seg]
 
