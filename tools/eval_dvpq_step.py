@@ -167,9 +167,9 @@ def main():
     things_index[11] = True
     things_index[13] = True
 
-    for i in ["037765", "093264", "112983"]:
+    for seq_id in ["037765", "093264", "112983"]:
         if args.depth_thres > 0:
-            depth_dir = os.path.join(depth_dir_all, str(i))
+            depth_dir = os.path.join(depth_dir_all, str(seq_id))
             depth_pred_names = os.scandir(depth_dir)
             depth_pred_names = [name.name for name in depth_pred_names]
             depth_pred_names = [
@@ -189,7 +189,7 @@ def main():
         gt_names = sorted(
             list(
                 filter(
-                    lambda x: os.path.basename(x).startswith(i),
+                    lambda x: os.path.basename(x).startswith(seq_id),
                     gt_names_all,
                 )
             )
@@ -198,7 +198,7 @@ def main():
             depth_gt_names = sorted(
                 list(
                     filter(
-                        lambda x: os.path.basename(x).startswith(i),
+                        lambda x: os.path.basename(x).startswith(seq_id),
                         depth_gt_names_all,
                     )
                 )
