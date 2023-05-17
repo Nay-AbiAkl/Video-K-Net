@@ -150,6 +150,8 @@ def main():
     gt_names_all = [os.path.join(gt_dir, name) for name in gt_names_all]
     gt_names_all = sorted(gt_names_all)
 
+    print("get gt_names_all ", gt_names_all)
+
     if args.depth_thres > 0:
         depth_gt_names_all = os.scandir(gt_dir)
         depth_gt_names_all = [
@@ -194,6 +196,8 @@ def main():
                 )
             )
         )
+
+        print("gt_names ", gt_names)
         if args.depth_thres > 0:
             depth_gt_names = sorted(
                 list(
