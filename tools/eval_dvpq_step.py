@@ -189,7 +189,7 @@ def main():
         gt_names = sorted(
             list(
                 filter(
-                    lambda x: os.path.basename(x).startswith("{:06d}".format(i)),
+                    lambda x: os.path.basename(x).startswith(i),
                     gt_names_all,
                 )
             )
@@ -198,7 +198,7 @@ def main():
             depth_gt_names = sorted(
                 list(
                     filter(
-                        lambda x: os.path.basename(x).startswith("{:06d}".format(i)),
+                        lambda x: os.path.basename(x).startswith(i),
                         depth_gt_names_all,
                     )
                 )
