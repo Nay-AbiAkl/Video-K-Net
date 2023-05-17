@@ -59,6 +59,13 @@ def updater(
     print("pred_ins", pred_ins.shape, pred_ins.dtype)
     print("gt_cls", gt_cls.shape, gt_cls.dtype)
     print("gt_ins", gt_ins.shape, gt_ins.dtype)
+
+    test1 = pred_cls[valid_mask_seg]
+    print("test1", test1.shape, test1.dtype)
+
+    test2 = pred_ins[valid_mask_seg]
+    print("test2", test2.shape, test2.dtype)
+
     pred_masked_ps = pred_cls[valid_mask_seg] * (2**16) + pred_ins[valid_mask_seg]
     gt_masked_ps = gt_cls[valid_mask_seg] * (2**16) + gt_ins[valid_mask_seg]
 
