@@ -54,32 +54,24 @@ def updater(
 
     valid_mask_seg = gt_cls != 255
 
-    print("valid_mask_seg", valid_mask_seg.shape, valid_mask_seg.dtype)
-    print("pred_cls", pred_cls.shape, pred_cls.dtype)
-    print("pred_ins", pred_ins.shape, pred_ins.dtype)
-    print("gt_cls", gt_cls.shape, gt_cls.dtype)
-    print("gt_ins", gt_ins.shape, gt_ins.dtype)
+    if pred_cls.shape == gt_cls.shape:
+        pred_masked_ps = pred_cls[valid_mask_seg] * (2**16) + pred_ins[valid_mask_seg]
+        gt_masked_ps = gt_cls[valid_mask_seg] * (2**16) + gt_ins[valid_mask_seg]
 
-    test1 = pred_cls[valid_mask_seg]
-    print("test1", test1.shape, test1.dtype)
+        if pred_dep_name is not None:
+            valid_mask_dep = gt_dep > 0.0
 
-    test2 = pred_ins[valid_mask_seg]
-    print("test2", test2.shape, test2.dtype)
+            pred_masked_depth = pred_dep[valid_mask_dep]
+            gt_masked_depth = gt_dep[valid_mask_dep]
 
-    pred_masked_ps = pred_cls[valid_mask_seg] * (2**16) + pred_ins[valid_mask_seg]
-    gt_masked_ps = gt_cls[valid_mask_seg] * (2**16) + gt_ins[valid_mask_seg]
+            updater_obj.update_state(
+                gt_masked_ps, pred_masked_ps, gt_masked_depth, pred_masked_depth, seq_id
+            )
+        else:
+            updater_obj.update_state(gt_masked_ps, pred_masked_ps, seq_id)
 
-    if pred_dep_name is not None:
-        valid_mask_dep = gt_dep > 0.0
-
-        pred_masked_depth = pred_dep[valid_mask_dep]
-        gt_masked_depth = gt_dep[valid_mask_dep]
-
-        updater_obj.update_state(
-            gt_masked_ps, pred_masked_ps, gt_masked_depth, pred_masked_depth, seq_id
-        )
     else:
-        updater_obj.update_state(gt_masked_ps, pred_masked_ps, seq_id)
+        print("SKIPPED")
 
 
 def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
