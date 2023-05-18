@@ -1,3 +1,7 @@
+The Cityscapes, KITTI-STEP, and Waymo datasets were used for the pretraining and training in our project.
+The preparation of each dataset is explained below.
+
+
 Please prepare the data structure as the following instruction:
 
 The final dataset folder should be like this. 
@@ -11,97 +15,94 @@ root
 │   ├──  cityscapes
 ```
 
-### [VPS] KITTI-STEP
+# [VPS] KITTI-STEP
 
-Download the KITTI-STEP from the official website. 
+## KITTI-STEP dataset
 
-Then run the scripts in scripts/kitti_step_prepare.py.
-You will get such format.
-You can get the our pre-process format in https://huggingface.co/LXT/VideoK-Net/tree/main
+KITTI-STEP extends the existing
+[KITTI-MOTS](http://www.cvlibs.net/datasets/kitti/eval_mots.php) dataset with
+spatially and temporally dense annotations. KITTI-STEP dataset provides a
+test-bed for studying long-term pixel-precise segmentation and tracking under
+real-world conditions.
+
+## Label Map
+
+KITTI-STEP adopts the same 19 classes as defined in
+[Cityscapes](https://www.cityscapes-dataset.com/dataset-overview/#class-definitions)
+with `pedestrians` and `cars` carefully annotated with track IDs. More
+specifically, KITTI-STEP has the following label to index mapping:
+
+Label Name     | Label ID
+-------------- | --------
+road           | 0
+sidewalk       | 1
+building       | 2
+wall           | 3
+fence          | 4
+pole           | 5
+traffic light  | 6
+traffic sign   | 7
+vegetation     | 8
+terrain        | 9
+sky            | 10
+person&dagger; | 11
+rider          | 12
+car&dagger;    | 13
+truck          | 14
+bus            | 15
+train          | 16
+motorcycle     | 17
+bicycle        | 18
+void           | 255
+
+&dagger;: Single instance annotations are available.
+
+## Prepare KITTI-STEP for Training and Evaluation
+
+KITTI-STEP has the same train and test sequences as
+[KITTI-MOTS](http://www.cvlibs.net/datasets/kitti/eval_mots.php) (with 21 and 29
+sequences for training and testing, respectively). Similarly, the training
+sequences are further split into training set (12 sequences) and validation set
+(9 sequences).
+
+In the following, we provide a step-by-step walk through to prepare the data.
+
+1.  Download KITTI-STEP images from their
+    [official website](https://www.cvlibs.net/datasets/kitti/eval_step.php) and unzip.
+
+    ```bash
+    wget ${KITTI_LINK}
+    unzip ${KITTI_IMAGES}.zip
+    ```
+
+2.  Download groundtruth KITTI-STEP panoptic maps from
+    [here](https://storage.googleapis.com/gresearch/tf-deeplab/data/kitti-step.tar.gz).
+
+    ```bash
+    # Goto ${KITTI_STEP_ROOT}
+    cd ..
+
+    wget https://storage.googleapis.com/gresearch/tf-deeplab/data/kitti-step.tar.gz
+    tar -xvf kitti-step.tar.gz
+    mv kitti-step/panoptic_maps panoptic_maps
+    rm -r kitti-step
+    ```
+3. Prepare the dataset using the provided script:
+
+    ```bash
+    python scripts/kitti_step_prepare.py
+    ```
+
+
+The groundtruth panoptic map is encoded as follows in PNG format:
 
 ```
-├── kitti-step
-│   ├──  video_sequence
-│   │   ├── train
-            ├──00018_000331_leftImg8bit.png
-            ├──000018_000331_panoptic.png
-            ├──****
-│   │   ├── val
-│   │   ├── test 
+R = semantic_id
+G = instance_id // 256
+B = instance % 256
 ```
-
-
-### [VPS] VIPSeg
-
-Download the origin dataset from the official repo.\
-Following official repo, we use resized videos for training and evaluation (The short size of the input is set to 720 while the ratio is keeped).
-
-```
-├── VIPSeg
-│   ├──  images
-│   │   ├── 1241_qYvEuwrSiXc
-        │      ├──*.jpg
-│   ├──  panomasks 
-│   │   ├── 1241_qYvEuwrSiXc
-        │      ├──*.png
-│   ├──  panomasksRGB 
-```
-
-
-### [VIS] Youtube-VIS-2019
-We use pre-processed json file according to mmtracking codebase.
-see the "tools/dataset/youtubevis2coco.py"
-
-```
-├── youtube_vis_2019
-│   ├── annotations
-│   │   ├── train.json
-│   │   ├── valid.json
-│   │   ├── youtube_vis_2019_train.json
-│   │   ├── youtube_vis_2019_valid.json
-│   ├── train
-│   │   ├──JPEGImages
-│   │   │   ├──video floders
-│   ├── valid
-│   │   ├──JPEGImages
-│   │   │   ├──video floders
-```
-
-
-### [VSS] VSPW
-
-To do
-
-
-### [VPS] Cityscapes 
-
-For Cityscape-VPS and Cityscape-DVPS, we suggest the follower to see
-The model of Video K-Net will not be released due to the Patent ISSUE and INTERNAL USEAGE. 
-
-You can find our related works. ECCV-2022, PolyphonicFormer: A Unified Framework For Panoptic Segmentation + Depth Estimation (winner of ICCV-2021 BMTT workshop)
-(https://github.com/HarborYuan/PolyphonicFormer)
-
-
 
 ## Image DataSet For Pretraining K-Net
-
-### COCO dataset
-
-COCO is most common datatsets. It contains 80 thing classes and 54 stuff classes.
-
-The dataset format is the same as origin [Detectron2](https://github.com/facebookresearch/detectron2)
-including panoptic segmentation preparation [scirpts](https://github.com/facebookresearch/detectron2/blob/master/datasets/prepare_panoptic_fpn.py).
-
-Then the final folder is like this:
-```
-├── coco
-│   ├── annotations
-│   │   ├── panoptic_{train,val}2017.json
-│   │   ├── instance_{train,val}2017.json
-│   ├── train2017
-│   ├── val2017
-│   ├── panoptic_{train,val}2017/  # png annotations
-```
 
 ### Cityscapes dataset
 
