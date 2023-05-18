@@ -197,7 +197,11 @@ def main():
 
         pred_dir = os.path.join(pred_dir_all)
         pred_names = os.scandir(pred_dir)
-        pred_names = [os.path.join(pred_dir, name.name) for name in pred_names]
+        pred_names = [
+            os.path.join(pred_dir, name.name)
+            for name in pred_names
+            if name.name.startswith(seq_id)
+        ]
         cat_pred_names = [name for name in pred_names if name.endswith("cat.png")]
         ins_pred_names = [name for name in pred_names if name.endswith("ins.png")]
         cat_pred_names = sorted(cat_pred_names)
