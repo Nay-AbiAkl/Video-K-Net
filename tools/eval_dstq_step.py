@@ -103,10 +103,14 @@ def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
     for seq_id in seq_ids:
         # pred_name_panoptic = list(mmcv.scandir(os.path.join(result_dir, "panoptic")))
         pred_names = list(mmcv.scandir(os.path.join(result_dir, "panoptic")))
-        pred_name_panoptic = list(filter(lambda x: seq_id in x, pred_names))
+        pred_name_panoptic = list(filter(lambda x: x.startswith(seq_id), pred_names))
+
+        print("pred name panoptic: ", pred_name_panoptic)
+        print("\n\n")
 
         pred_ins_names = sorted(list(filter(lambda x: "ins" in x, pred_name_panoptic)))
         pred_cls_names = sorted(list(filter(lambda x: "cat" in x, pred_name_panoptic)))
+
         if with_depth:
             pred_name_depth = list(
                 mmcv.scandir(os.path.join(result_dir, "depth", str(seq_id)))
