@@ -83,8 +83,7 @@ def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
     else:
         dstq_obj = STQuality(
             num_classes=19,
-            # things_list=list(range(11, 19)),
-            things_list=[11, 13],
+            things_list=list(range(11, 19)),
             ignore_label=255,
             label_bit_shift=16,
             offset=2**16 * 256,
