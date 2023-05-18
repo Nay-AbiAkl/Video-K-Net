@@ -169,7 +169,23 @@ def main():
     things_index[11] = True
     things_index[13] = True
 
-    for seq_id in ["037765", "093264", "112983"]:
+    for seq_id in [
+        "037765_1",
+        "037765_2",
+        "037765_3",
+        "037765_4",
+        "037765_5",
+        "093264_1",
+        "112983_1",
+        "093264_2",
+        "112983_2",
+        "093264_3",
+        "112983_3",
+        "093264_4",
+        "112983_4",
+        "093264_5",
+        "112983_5",
+    ]:
         if args.depth_thres > 0:
             depth_dir = os.path.join(depth_dir_all, str(seq_id))
             depth_pred_names = os.scandir(depth_dir)
