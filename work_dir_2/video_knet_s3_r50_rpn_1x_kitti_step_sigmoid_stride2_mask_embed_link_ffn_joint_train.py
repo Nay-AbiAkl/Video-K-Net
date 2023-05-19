@@ -13,7 +13,7 @@ checkpoint_config = dict(interval=1)
 log_config = dict(interval=50, hooks=[dict(type="TextLoggerHook")])
 dist_params = dict(backend="nccl")
 log_level = "INFO"
-load_from = "/home/mahassan/Video-K-Net/work_dir/epoch_8.pth"
+load_from = "/home/nabiakl/Video-K-Net/work_dir/epoch_8.pth"
 resume_from = None
 workflow = [("train", 1)]
 num_stages = 3
@@ -591,5 +591,5 @@ num_thing_classes = 2
 num_stuff_classes = 17
 num_classes = 19
 find_unused_parameters = True
-work_dir = "/home/mahassan/Video-K-Net/work_dir_2"
+work_dir = "/home/nabiakl/Video-K-Net/work_dir_2"
 gpu_ids = range(0, 1)

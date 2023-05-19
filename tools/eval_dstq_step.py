@@ -14,7 +14,7 @@ from tools.utils.STQ import STQuality
 def parse_args():
     parser = argparse.ArgumentParser(description="Evaluation of DSTQ")
     parser.add_argument("result_path")
-    parser.add_argument("--gt-path", default="/home/mahassan/waymo_out/")
+    parser.add_argument("--gt-path", default="/home/nabiakl/kitti_out/")
     parser.add_argument("--split", default="val")
     parser.add_argument("--depth", action="store_true", help="eval depth")
     parser.add_argument("--nproc", default=1, type=int, help="number of process")
