@@ -127,7 +127,7 @@ class LoadAnnotationsDirect:
             results["gt_depth"] = depth
             results["depth_fields"] = ["gt_depth"]
 
-        local_divisor = 1000
+        local_divisor = 10000
         if self.panseg_divisor == 0:
             # The seperate file to store class id and inst id
             gt_semantic_seg = mmcv.imread(
