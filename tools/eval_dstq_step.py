@@ -92,7 +92,7 @@ def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
             # label_bit_shift=16,
             label_bit_shift=1,
             # offset=2**16 * 256,
-            offset=256,
+            offset=2 * 256,
         )
 
     gt_names = list(mmcv.scandir(gt_dir))
