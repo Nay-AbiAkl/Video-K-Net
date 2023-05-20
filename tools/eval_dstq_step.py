@@ -89,7 +89,8 @@ def eval_dstq(result_dir, gt_dir, seq_ids, with_depth=True):
             num_classes=19,
             things_list=list(range(11, 19)),
             ignore_label=255,
-            label_bit_shift=16,
+            # label_bit_shift=16,
+            label_bit_shift=1,
             # offset=2**16 * 256,
             offset=256,
         )
