@@ -137,7 +137,7 @@ def eval(element):
         pred_in_depth_mask[ignored_pred_mask] = 19 * max_ins
         pred_in_mask[depth_mask] = pred_in_depth_mask
         pred[:, : depth_preds.shape[1]] = pred_in_mask
-    if len(gt) != 0:
+    if len(gts) != 0:
         gt = np.concatenate(gts, axis=1)
 
         result = vpq_eval([pred, gt])
