@@ -103,12 +103,12 @@ def eval(element):
     max_ins = 2**16
 
     pred_cat, pred_ins, gts, depth_preds, depth_gts = element
+    print("pred", pred_cat, flush=True)
     pred_cat = [np.array(Image.open(image)) for image in pred_cat]
     pred_ins = [np.array(Image.open(image)) for image in pred_ins]
     pred_cat = np.concatenate(pred_cat, axis=1)
     pred_ins = np.concatenate(pred_ins, axis=1)
     pred = pred_cat.astype(np.int32) * max_ins + pred_ins.astype(np.int32)
-    print("pred", pred_cat, flush=True)
     print(gts, flush=True)
     gts_pan = [np.array(Image.open(image)) for image in gts]
     gts = [
