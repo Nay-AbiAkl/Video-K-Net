@@ -108,7 +108,7 @@ def eval(element):
     pred_cat = np.concatenate(pred_cat, axis=1)
     pred_ins = np.concatenate(pred_ins, axis=1)
     pred = pred_cat.astype(np.int32) * max_ins + pred_ins.astype(np.int32)
-    images = gts.copy()
+    print(gts)
     gts_pan = [np.array(Image.open(image)) for image in gts]
     gts = [
         gt_pan[..., 0].astype(np.int32) * max_ins
@@ -137,10 +137,9 @@ def eval(element):
         pred_in_depth_mask[ignored_pred_mask] = 19 * max_ins
         pred_in_mask[depth_mask] = pred_in_depth_mask
         pred[:, : depth_preds.shape[1]] = pred_in_mask
-    if len(gts) != 0:
-        gt = np.concatenate(gts, axis=1)
-    else:
-        print(images)
+
+    gt = np.concatenate(gts, axis=1)
+
     result = vpq_eval([pred, gt])
 
     return result + (abs_rel,)
