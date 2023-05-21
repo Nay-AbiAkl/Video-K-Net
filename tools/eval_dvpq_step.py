@@ -108,7 +108,7 @@ def eval(element):
     pred_cat = np.concatenate(pred_cat, axis=1)
     pred_ins = np.concatenate(pred_ins, axis=1)
     pred = pred_cat.astype(np.int32) * max_ins + pred_ins.astype(np.int32)
-    print("pred before adding gt_pan", pred.shape)
+
     gts_pan = [np.array(Image.open(image)) for image in gts]
     gts = [
         gt_pan[..., 0].astype(np.int32) * max_ins
@@ -116,7 +116,7 @@ def eval(element):
         + gt_pan[..., 2].astype(np.int32)
         for gt_pan in gts_pan
     ]
-    print("gts after adding gt_pan ", len(gts))
+
     abs_rel = 0.0
     if depth_thres > 0:
         depth_preds = [np.array(Image.open(name)) for name in depth_preds]
@@ -137,8 +137,10 @@ def eval(element):
         pred_in_depth_mask[ignored_pred_mask] = 19 * max_ins
         pred_in_mask[depth_mask] = pred_in_depth_mask
         pred[:, : depth_preds.shape[1]] = pred_in_mask
-
-    gt = np.concatenate(gts, axis=1)
+    if len(gts) != 0:
+        gt = np.concatenate(gts, axis=1)
+    else:
+        print("skipped")
     result = vpq_eval([pred, gt])
 
     return result + (abs_rel,)
