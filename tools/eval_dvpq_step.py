@@ -108,7 +108,7 @@ def eval(element):
     pred_cat = np.concatenate(pred_cat, axis=1)
     pred_ins = np.concatenate(pred_ins, axis=1)
     pred = pred_cat.astype(np.int32) * max_ins + pred_ins.astype(np.int32)
-    print("pred before adding gt_pan", pred)
+    print("pred before adding gt_pan", pred.shape)
     gts_pan = [np.array(Image.open(image)) for image in gts]
     gts = [
         gt_pan[..., 0].astype(np.int32) * max_ins
@@ -116,7 +116,7 @@ def eval(element):
         + gt_pan[..., 2].astype(np.int32)
         for gt_pan in gts_pan
     ]
-    print("gts after adding gt_pan ", gts)
+    print("gts after adding gt_pan ", gts.shape)
     abs_rel = 0.0
     if depth_thres > 0:
         depth_preds = [np.array(Image.open(name)) for name in depth_preds]
