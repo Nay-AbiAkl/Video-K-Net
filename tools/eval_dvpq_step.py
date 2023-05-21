@@ -137,12 +137,14 @@ def eval(element):
         pred_in_depth_mask[ignored_pred_mask] = 19 * max_ins
         pred_in_mask[depth_mask] = pred_in_depth_mask
         pred[:, : depth_preds.shape[1]] = pred_in_mask
+    if len(gt) != 0:
+        gt = np.concatenate(gts, axis=1)
 
-    gt = np.concatenate(gts, axis=1)
+        result = vpq_eval([pred, gt])
 
-    result = vpq_eval([pred, gt])
-
-    return result + (abs_rel,)
+        return result + (abs_rel,)
+    else:
+        print("skipped")
 
 
 def main():
@@ -243,7 +245,7 @@ def main():
         )
 
         print("gt_names ", gt_names)
-        gt_names = list(filter(lambda element: element != "", gt_names))
+
         if args.depth_thres > 0:
             depth_gt_names = sorted(
                 list(
