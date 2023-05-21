@@ -584,7 +584,7 @@ class VideoKNetQuansiEmbedFCJointTrain(BaseDetector):
             is_first = fid == 1
         else:
             iid = kwargs["img_id"][0].item()
-            fid = iid % 101601
+            fid = iid % 301602
             is_first = fid == 0
 
         # for current frame
