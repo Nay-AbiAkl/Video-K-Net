@@ -243,6 +243,7 @@ def main():
         )
 
         print("gt_names ", gt_names)
+        gt_names = list(filter(lambda element: element != "", gt_names))
         if args.depth_thres > 0:
             depth_gt_names = sorted(
                 list(
@@ -266,7 +267,7 @@ def main():
                     else None,
                 ]
             )
-        all_lst = list(filter(lambda element: element != "", all_lst))
+
         N = mp.cpu_count() // 2
         with mp.Pool(processes=N) as p:
             results = p.map(eval, all_lst)
