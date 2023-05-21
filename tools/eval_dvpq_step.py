@@ -116,7 +116,7 @@ def eval(element):
         + gt_pan[..., 2].astype(np.int32)
         for gt_pan in gts_pan
     ]
-    print("gts after adding gt_pan ", gts.shape)
+    print("gts after adding gt_pan ", len(gts))
     abs_rel = 0.0
     if depth_thres > 0:
         depth_preds = [np.array(Image.open(name)) for name in depth_preds]
