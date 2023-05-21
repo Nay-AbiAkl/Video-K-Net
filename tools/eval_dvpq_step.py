@@ -145,6 +145,7 @@ def eval(element):
         return result + (abs_rel,)
     else:
         print("skipped", flush=True)
+        return 0
 
 
 def main():
