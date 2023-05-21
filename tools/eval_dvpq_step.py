@@ -108,6 +108,7 @@ def eval(element):
     pred_cat = np.concatenate(pred_cat, axis=1)
     pred_ins = np.concatenate(pred_ins, axis=1)
     pred = pred_cat.astype(np.int32) * max_ins + pred_ins.astype(np.int32)
+    print("pred", pred_cat, flush=True)
     print(gts, flush=True)
     gts_pan = [np.array(Image.open(image)) for image in gts]
     gts = [
@@ -145,7 +146,6 @@ def eval(element):
         return result + (abs_rel,)
     else:
         print("skipped", flush=True)
-        return np.array(0)
 
 
 def main():
