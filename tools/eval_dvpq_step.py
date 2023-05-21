@@ -103,13 +103,12 @@ def eval(element):
     max_ins = 2**16
 
     pred_cat, pred_ins, gts, depth_preds, depth_gts = element
-    print("pred", pred_cat, flush=True)
     pred_cat = [np.array(Image.open(image)) for image in pred_cat]
     pred_ins = [np.array(Image.open(image)) for image in pred_ins]
     pred_cat = np.concatenate(pred_cat, axis=1)
     pred_ins = np.concatenate(pred_ins, axis=1)
     pred = pred_cat.astype(np.int32) * max_ins + pred_ins.astype(np.int32)
-    print(gts, flush=True)
+
     gts_pan = [np.array(Image.open(image)) for image in gts]
     gts = [
         gt_pan[..., 0].astype(np.int32) * max_ins
@@ -138,14 +137,12 @@ def eval(element):
         pred_in_depth_mask[ignored_pred_mask] = 19 * max_ins
         pred_in_mask[depth_mask] = pred_in_depth_mask
         pred[:, : depth_preds.shape[1]] = pred_in_mask
-    if len(gts) != 0:
-        gt = np.concatenate(gts, axis=1)
 
-        result = vpq_eval([pred, gt])
+    gt = np.concatenate(gts, axis=1)
 
-        return result + (abs_rel,)
-    else:
-        print("skipped", flush=True)
+    result = vpq_eval([pred, gt])
+
+    return result + (abs_rel,)
 
 
 def main():
