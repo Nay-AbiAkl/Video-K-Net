@@ -1,7 +1,7 @@
 import os
 
 # Folder path containing the images
-folder_path = "test_data"
+folder_path = "/home/nabiakl/waymo_out/video_sequence/train/"
 
 # List all files in the folder
 file_list = os.listdir(folder_path)
