@@ -1,235 +1,29 @@
-# Video K-Net: A Simple, Strong, and Unified Baseline for Video Segmentation (CVPR-2022, oral) 
-## [Paper](https://arxiv.org/abs/2204.04656), [Sides](./slides/Video-KNet-cvpr-slides-10-25-version.pptx), [Poster](./slides/cvpr22_poster_lxt_zww_pjm.pdf), [Video](https://www.youtube.com/watch?v=LIEyp_czu20&t=3s)
+# Video Panoptic Segmenation 
 
-[Xiangtai Li](https://lxtgh.github.io/),
-[Wenwei Zhang](https://zhangwenwei.cn/),
-[Jiangmiao Pang](https://oceanpang.github.io/),
-[Kai Chen](https://chenkai.site/), 
-[Guangliang Cheng](https://scholar.google.com/citations?user=FToOC-wAAAAJ),
-[Yunhai Tong](https://scholar.google.com/citations?user=T4gqdPkAAAAJ&hl=zh-CN),
-[Chen Change Loy](https://www.mmlab-ntu.com/person/ccloy/).
 
-We introduce Video K-Net, a simple, strong, and unified framework for fully end-to-end dense video segmentation. 
 
-The method is built upon K-Net, a method of unifying image segmentation via a group of learnable kernels.
+## Waymo Dataset
 
-This project contains the training and testing code of Video K-Net for both VPS (Video Panoptic Segmentation), 
-VSS(Video Semantic Segmentation), VIS(Video Instance Segmentation).
+The second contribution is training Video-Knet on the Waymo dataset which is larger and more diverse with 5 different camera views. We aim to explore training Video-Knet on the Waymo dataset. More specifically, we aim to test once on all the 5 different views and once with 3 different camera views. Since the Waymo Open dataset is huge, we extract the same number of training images as Kitti Step which is around 10k and 5k testing dataset.
 
-To the best of our knowledge, our Video K-Net is the first open-sourced method that supports three different video segmentation tasks (VIS, VPS, VSS) for Video Scene Understanding.
+We aim to test the different in generalisation on new datasets by testing the model trained on Waymo on the kitti dataset and the other way around. We perform the cross testing to check the generalisation of the model to evaluate whether training on different camera views can increase generalisation. We assume that both datasets share the same domain knowledge and are not significantly different than each other. However, statistical analysis could be conducted to analyse whether there is a significant difference between the distributions of the features of both datasets. 
 
-## News! Video K-Net is acknowledged as a strong baseline for CVPR-2023 workshop ["The 2nd Pixel-level Video Understanding in the Wild"](https://www.vspwdataset.com/Workshop%202023.html). 
-## News! Video K-Net also supports [VIP-Seg](https://github.com/VIPSeg-Dataset/VIPSeg-Dataset) dataset(CVPR-2022). It also achieves the new state-of-the-art result.
+We also hypothesize that the fourth and fifth views only see the sides of the car which are often just building which do not contribute to generalisation on the front views of the kitti step dataset. Therefore, we remove the fourth and fifth views and test the difference in performance between training on 5 different cameras and 3 different cameras. We hypothesize that removing these two views could possibly even make the generalization better because both the 3-camera and 5-camera datasets have the same number of datapoints but the latter has much less of the front, front-left and front-right views. 
 
 
-### Environment and DataSet Preparation 
-Our codebase is based on MMDetection and MMSegmentation. Parts of the code is borrowed from MMtracking and UniTrack.
+In order to train Video-Knet on Waymo, we had to pre-process it from scratch to match the format of the Kitti-step dataset. All the datasets trained on Video-Knet are processed to match the CoCo format including Kitti-step and Cityscape. So, we followed the same formatting by making use of the Waymo Open package. We believe this is a contribution to the community as we did not find any source online that does that from scratch. Therefore, the following files were added.
 
-- MIM >= 0.1.1
-- MMCV-full >= v1.3.8
-- MMDetection == v2.18.0
-- timm
-- scipy
-- panopticapi
 
-See the [DATASET.md](https://github.com/lxtGH/Video-K-Net/blob/main/DATASET.md)
+To convert Waymo to Kitti format:
+```waymo_tools/Convert_waymo_to_kitti.ipynb```
 
-knet folder contains the Video K-Net for VPS.
+The tfrecords used for the training dataset:
+```waymo_tools/waymo.txt```
 
-knet_vis folder contains the Video K-Net for VIS.
+To ensure we have RGB and panoptic pairs of images:
+```waymo_tools/check_image_pairs.py```
 
+To delete the fourth and fifth camera views:
+```waymo_tools/extract_cam_data.py```
 
-
-### Pretrained CKPTs and Trained Models
-
-We provide the pretrained models for VPS and VIS.
-
-Baidu Yun Link: [here](https://pan.baidu.com/s/12dIinkAF3o60fcAoggVhjQ)  Code:i034
-
-One Drive Link: [here](https://1drv.ms/u/s!Ai4mxaXd6lVBgSCTUS0QWNim2zGx?e=uceSee)
-
-The pretrained models are provided to train the Video K-Net.
-
-The trained models are also provided for play and test.
-
-
-
-### [VPS] KITTI-STEP
-
-1. First pretrain K-Net on Cityscapes-STEP datasset. As shown in original STEP paper(Appendix Part) and our own EXP results, this step is very important to improve the segmentation performance.
-You can also use our trained model for verification.
-
-Cityscape-STEP follows the format of STEP: 17 stuff classes and 2 thing classes. 
-
-```bash
-# train cityscapes step panoptic segmentation models
-sh ./tools/slurm_train.sh $PARTITION knet_step configs/det/knet_cityscapes_step/knet_s3_r50_fpn.py $WORK_DIR --no-validate
-```
-
-2. Then train the Video K-Net on KITTI-STEP. We have provided the pretrained models from Cityscapes of Video K-Net.
-
-For slurm users:
-
-```bash
-# train Video K-Net on KITTI-step using R-50
-GPUS=8 sh ./tools/slurm_train.sh $PARTITION video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py $WORK_DIR --no-validate --load-from /path_to_knet_step_city_r50
-```
-
-```bash
-# train Video K-Net on KITTI-step using Swin-base
-GPUS=16 GPUS_PER_NODE=8 sh ./tools/slurm_train.sh $PARTITION video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_swinb_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py $WORK_DIR --no-validate --load-from /path_to_knet_step_city_r50
-```
-
-Our models are trained with two V100 machines. 
-
-For Local machine:
-
-```bash
-# train Video K-Net on KITTI-step with 8 GPUs
-sh ./tools/dist_train.sh video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py 8 $WORK_DIR --no-validate
-```
-
-
-3. Testing and Demo.
-
-We provide both VPQ and STQ metrics to evaluate VPS models. 
-
-```bash
-# test locally 
-sh ./tools/dist_step_test.sh configs/det/knet_cityscapes_ste/knet_s3_r50_fpn.py $MODEL_DIR 
-```
-
-We also dump the colored images for debug.
-
-```bash
-# eval STEP STQ
-python tools/eval_dstq_step.py result_path gt_path
-```
-
-```bash
-# eval STEP VPQ
-python tools/eval_dvpq_step.py result_path gt_path
-```
-
-#### Toy Video K-Net 
-
-As shown in the paper, we also provide toy video K-Net in knet/video/knet_quansi_dense_embed_fc_toy_exp.py. 
-You use the K-Net pre-trained on image-level KITTI-STEP without tracking.
-
-
-### [VIS] YouTube-VIS-2019
-
-1. First Download the pre-trained Image K-Net instance segmentation models. All the models are pretrained on COCO which is
-a common. You can also pretrain it by yourself. We also provide the config for pretraining.
-
-For slurm users:
-
-```bash
-# train K-Net instance segmentation models on COCO using R-50
-GPUS=8 sh ./tools/slurm_train.sh $PARTITION knet_instance configs/det/coco/knet_s3_r50_fpn_ms-3x_coco.py $WORK_DIR 
-```
-
-2. Then train the video K-Net in a clip-wised manner. 
-
-```bash
-# train Video K-Net VIS models using R-50
-GPUS=8 sh ./tools/slurm_train.sh $PARTITION video_knet_vis configs/video_knet_vis/video_knet_vis/knet_track_r50_1x_youtubevis.py $WORK_DIR --load-from /path_to_knet_instance_coco
-```
-
-3. To evaluate the results of Video K-Net on VIS. Dump the prediction results for submission to the conda server. 
-
-```bash
-# test Video K-Net VIS models using R-50
-GPUS=8 sh ./tools/slurm_train.sh $PARTITION video_knet_vis configs/video_knet_vis/video_knet_vis/knet_track_r50_1x_youtubevis.py $WORK_DIR 
-```
-
-
-### [VPS] VIP-Seg
-
-1. First Download the pre-trained Image K-Net panoptic segmentation models. All the models are pretrained on COCO which is
-a common step following VIP-Seg. You can also pretrain it by yourself. We also provide the config for pretraining.
-```bash
-# train K-Net on COCO Panoptic Segmetnation
-GPUS=8 sh ./tools/slurm_train.sh $PARTITION knet_coco configs/det/coco/knet_s3_r50_fpn_ms-3x_coco-panoptic.py $WORK_DIR 
-```
-
-2. Train the Video K-Net on the VIP-Seg dataset. 
-```bash
-# train Video K-Net on VIP-Seg
-GPUS=8 sh ./tools/slurm_train.sh $PARTITION video_knet_vis configs/det/video_knet_vipseg/video_knet_s3_r50_rpn_vipseg_mask_embed_link_ffn_joint_train.py $WORK_DIR --load-from /path/knet_coco_pretrained_r50
-```
-
-3. Test the Video K-Net on VIP-Seg val dataset.
-```bash
-# test locally on VIP-Seg
-sh ./tools/dist_step_test.sh configs/det/video_knet_vipseg/video_knet_s3_r50_rpn_vipseg_mask_embed_link_ffn_joint_train.py $MODEL_DIR 
-```
-
-We also dump the colored images for debug.
-
-```bash
-# eval STEP STQ
-python tools/eval_dstq_vipseg.py result_path gt_path
-```
-
-```bash
-# eval STEP VPQ
-python tools/eval_dvpq_vipseg.py result_path gt_path
-```
-
-
-## Visualization Results
-
-
-### Results on KITTI-STEP DataSet
-
-
-
-### Results on VIP-Seg DataSet
-
-
-
-### Results on YouTube-VIS DataSet
-
-
-
-### Short term segmentation and tracking results on Cityscapes VPS dataset.
-
-images(left), Video K-Net(middle), Ground Truth 
-![Alt Text](./figs/cityscapes_vps_video_1_20220318131729.gif)
-
-![Alt Text](./figs/cityscapes_vps_video_2_20220318132943.gif)
-
-### Long term segmentation and tracking results on STEP dataset.
-
-![Alt Text](./figs/step_video_1_20220318133227.gif)
-
-![Alt Text](./figs/step_video_2_20220318133423.gif)
-
-
-## Related Project and Acknowledgement
-## Citing Video K-Net :pray:
-
-If you use our codebase in your research or used for CVPR-2023 pixel-level video workshop, please use the following BibTeX entry.
-
-NIPS-2021, K-Net: Unified Segmentation: Our Image baseline (https://github.com/ZwwWayne/K-Net)
-
-ECCV-2022, PolyphonicFormer: A Unified Framework For Panoptic Segmentation + Depth Estimation (winner of ICCV-2021 BMTT workshop)
-(https://github.com/HarborYuan/PolyphonicFormer)
-
-```bibtex
-@inproceedings{li2022videoknet,
-  title={Video k-net: A simple, strong, and unified baseline for video segmentation},
-  author={Li, Xiangtai and Zhang, Wenwei and Pang, Jiangmiao and Chen, Kai and Cheng, Guangliang and Tong, Yunhai and Loy, Chen Change},
-  booktitle={CVPR},
-  year={2022}
-}
-
-@article{zhang2021k,
-  title={K-net: Towards unified image segmentation},
-  author={Zhang, Wenwei and Pang, Jiangmiao and Chen, Kai and Loy, Chen Change},
-  journal={NeurIPS},
-  year={2021}
-}
-```
 
