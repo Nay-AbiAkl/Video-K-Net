@@ -2,20 +2,25 @@ The Cityscapes, KITTI-STEP, and Waymo datasets were used for the pretraining and
 The preparation of each dataset is explained below.
 
 
-Please prepare the data structure as the following instruction:
-
-The final dataset folder should be like this. 
+The final dataset folder looks like this. 
 ```
-root 
-├── data
-│   ├──  kitti-step
-│   ├──  coco
-│   ├──  VIPSeg
-│   ├──  youtube_vis_2019
-│   ├──  cityscapes
+root
+├── kitti_out
+├── video_sequence
+│   ├── ├── train
+│   ├── ├── val
+
+├── waymo_out
+├── video_sequence
+│   ├── ├── train
+│   ├── ├── val
+
+├── Video-K-Net
+│   ├── data
+│   ├── ├── cityscapes
 ```
 
-# [VPS] KITTI-STEP
+# KITTI-STEP for Video-K-Net training
 
 ## KITTI-STEP dataset
 
@@ -57,6 +62,14 @@ void           | 255
 
 &dagger;: Single instance annotations are available.
 
+The groundtruth panoptic map is encoded as follows in PNG format:
+
+```
+R = semantic_id
+G = instance_id // 256
+B = instance % 256
+```
+
 ## Prepare KITTI-STEP for Training and Evaluation
 
 KITTI-STEP has the same train and test sequences as
@@ -93,41 +106,66 @@ In the following, we provide a step-by-step walk through to prepare the data.
     python scripts/kitti_step_prepare.py
     ```
 
+Make sure to change the paths in the mentioned script to the directories where the data was downloaded.
 
-The groundtruth panoptic map is encoded as follows in PNG format:
-
-```
-R = semantic_id
-G = instance_id // 256
-B = instance % 256
-```
-
-## Image DataSet For Pretraining K-Net
+## Cityscapes dataset for pretraining K-Net
 
 ### Cityscapes dataset
 
 Cityscapes dataset is a high-resolution road-scene dataset which contains 19 classes. 
 (8 thing classes and 11 stuff classes). 2975 images for training, 500 images for validation and 1525 images for testing.
 
-Preparing cityscape dataset has three steps:
+The expected datastructure for Cityscapes dataset is:
+```
+cityscapes/
+  gtFine/
+    train/
+      aachen/
+        color.png, instanceIds.png, labelIds.png, polygons.json,
+        labelTrainIds.png
+      ...
+    val/
+    test/
+    # below are generated Cityscapes panoptic annotation
+    cityscapes_panoptic_train.json
+    cityscapes_panoptic_train/
+    cityscapes_panoptic_val.json
+    cityscapes_panoptic_val/
+    cityscapes_panoptic_test.json
+    cityscapes_panoptic_test/
+  leftImg8bit/
+    train/
+    val/
+    test/
+```
 
-1, Convert segmentation id map(origin label id maps) to trainId maps (id ranges: 0-18 for training) using 
-the official scripts [repo](https://github.com/mcordts/cityscapesScripts)
+### Preparing Cityscapes dataset for pretraining
 
-2, The run python dataset/prepare_cityscapes.py to generate the COCO-like annotations. 
-This annotations can be used for Instance Segmentation training.
+Install cityscapes scripts by:
 
-using csCreateTrainIdLabelImgs.py
+```
+pip install git+https://github.com/mcordts/cityscapesScripts.git
+```
 
-and put the instancesonly_filtered_gtFine_train.json into annotations folder
+To create the 'labelTrainIds.png' converting the segmentation id map (origin label id maps) to trainId maps (id ranges: 0-18 for training), make sure to have the above structure, then run:
+```
+CITYSCAPES_DATASET=/path/to/abovementioned/cityscapes python cityscapesscripts/preparation/createTrainIdLabelImgs.py
+```
 
+To create the 'TrainIdInstanceImgs.png', run:
 
-3, For Panoptic Segmenation dataset, to generate the json file 
+```
+CITYSCAPES_DATASET=/path/to/abovementioned/cityscapes python cityscapesscripts/preparation/createTrainIdInstanceImgs.py
+```
 
-using csCreatePanopticImgs.py 
+To generate Cityscapes panoptic dataset, run:
 
-or you can download the our transformed .json and .png files via link: () and put the 
-json file into annotations folder. 
+```
+CITYSCAPES_DATASET=/path/to/abovementioned/cityscapes python cityscapesscripts/preparation/createPanopticImgs.py
+
+```
+
+Make sure to move all generated coco instance annotation files (.json) into the annotations folder.
 
 Then the final folder is like this:
 
