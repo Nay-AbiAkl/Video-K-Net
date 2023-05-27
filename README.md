@@ -21,59 +21,27 @@ As for the dataset preparation, please refer to DATASET.md for all the steps to 
 
 ### Scripts
 
-1. First pretrain K-Net on Cityscapes-STEP datasset. As shown in original STEP paper(Appendix Part) and our own EXP results, this step is very important to improve the segmentation performance.
-You can also use our trained model for verification.
-
-Cityscape-STEP follows the format of STEP: 17 stuff classes and 2 thing classes. 
+1. To pretrain K-Net on Cityscapes-STEP dataset.
 
 ```bash
 # train cityscapes step panoptic segmentation models
 sh ./tools/slurm_train.sh $PARTITION knet_step configs/det/knet_cityscapes_step/knet_s3_r50_fpn.py $WORK_DIR --no-validate
 ```
 
-2. Then train the Video K-Net on KITTI-STEP. We have provided the pretrained models from Cityscapes of Video K-Net.
-
-For slurm users:
+2. To train the Video K-Net on KITTI-STEP.
 
 ```bash
 # train Video K-Net on KITTI-step using R-50
-GPUS=8 sh ./tools/slurm_train.sh $PARTITION video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py $WORK_DIR --no-validate --load-from /path_to_knet_step_city_r50
-```
-
-```bash
-# train Video K-Net on KITTI-step using Swin-base
-GPUS=16 GPUS_PER_NODE=8 sh ./tools/slurm_train.sh $PARTITION video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_swinb_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py $WORK_DIR --no-validate --load-from /path_to_knet_step_city_r50
-```
-
-Our models are trained with two V100 machines. 
-
-For Local machine:
-
-```bash
-# train Video K-Net on KITTI-step with 8 GPUs
-sh ./tools/dist_train.sh video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py 8 $WORK_DIR --no-validate
+GPUS=8 sh ./tools/slurm_train.sh $PARTITION video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py $WORK_DIR --no-validate --load-from /path_to_pretraining_checkpoint
 ```
 
 
-3. Testing and Demo.
+3. Testing.
 
-We provide both VPQ and STQ metrics to evaluate VPS models. 
-
-```bash
-# test locally 
-sh ./tools/dist_step_test.sh configs/det/knet_cityscapes_ste/knet_s3_r50_fpn.py $MODEL_DIR 
-```
-
-We also dump the colored images for debug.
+We provide both VPQ and STQ metrics to evaluate VPS models. The colored segmentation images are also saved.
 
 ```bash
-# eval STEP STQ
-python tools/eval_dstq_step.py result_path gt_path
-```
-
-```bash
-# eval STEP VPQ
-python tools/eval_dvpq_step.py result_path gt_path
+sh ./tools/inference_kitti_step.sh ./configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step__sigmoid_stride2_mask_embed_link_ffn_joint_train.py $MODEL_DIR $OUT_DIR 
 ```
 
 
