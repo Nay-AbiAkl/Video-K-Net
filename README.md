@@ -44,6 +44,13 @@ We provide both VPQ and STQ metrics to evaluate VPS models. The colored segmenta
 sh ./tools/inference_kitti_step.sh ./configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step__sigmoid_stride2_mask_embed_link_ffn_joint_train.py $MODEL_DIR $OUT_DIR 
 ```
 
+Since the images are saved, we also added a script to make a video out of them for better visualization. Make sure to set the correct path to the saved images directory.
+
+```bash
+python tools/make_video.py
+```
+
+
 ### Contributions
 
 As stated in our project milestone, we added two contributions to the original Video-K-Net model:
