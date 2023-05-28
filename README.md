@@ -16,7 +16,7 @@ The requirements to run the repo can be found in "requirements.txt".
 
 We have also built a [docker image]() with all these requirements for ease of use.
 
-As for the dataset preparation, please refer to DATASET.md for all the steps to follow to prepare the three datasets used.
+As for the dataset preparation, please refer to [**DATASET.md**](./DATASET.md) for all the steps to follow to prepare the three datasets used.
 
 
 ### Scripts
@@ -44,6 +44,24 @@ We provide both VPQ and STQ metrics to evaluate VPS models. The colored segmenta
 sh ./tools/inference_kitti_step.sh ./configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step__sigmoid_stride2_mask_embed_link_ffn_joint_train.py $MODEL_DIR $OUT_DIR 
 ```
 
+### Contributions
+
+As stated in our project milestone, we added two contributions to the original Video-K-Net model:
+
+1. Increase the FPN layers up to P8 to improve the segmentation accuracy. This was done for the pretraining of the K-Net and for the training of the Video-K-Net model. In fact, to be able to compare with the baseline model, we performed the following experiments:
+
+Case A - Baseline: we use the pretrained K-Net model checkpoint and train the Video-K-Net model as is without any modifications.
+
+Case B - Modified pretraining: we pre-train a modified K-Net model with increased FPN layers (8 layers) and train the Video-K-Net model (with the obtained checkpoint) as is without any modification.
+
+Case C - Modified training: we use the pretrained K-Net model checkpoint and train a modified Video-K-Net model with increased FPN layers (8 layers).
+
+Case D - Modified training and pre-training: we pre-train a modified K-Net model with increased FPN layers (8 layers) and train a modified Video-K-Net model with increased FPN layers (8 layers) with the obtained checkpoint.
+
+
+2. Train on the Waymo dataset.
+
+For the detailed results of our contributions and case studies, please refer to [**RESULTS.md**](./RESULTS.md).
 
 ### Pretraining and training checkpoints
 
@@ -52,14 +70,14 @@ The checkpoints for our pretraining and training can be found in [this folder](h
 
 | Checkpoint name                           | Refers to                                                                 |
 |-------------------------------------------|---------------------------------------------------------------------------|
-| knet_pretraining_fpn_8                    | K-Net training on Cityscapes dataset with increased FPN layers            |
-| video_knet_training_fpn_8                 | Video-K-Net training on Kitti-step dataset with increased FPN layers      |
-| video_knet_baseline                       | Video-K-Net training on Kitti-step dataset with baseline model            |
+| video_knet_baseline (case A)              | Video-K-Net training on Kitti-step dataset with baseline model            |
 |                                           | and pretraining baseline checkpoint                                       |
 | video_knet_baseline_modified_pretraining  | Video-K-Net training on Kitti-step dataset with baseline model            |
-|                                           | and modified pretraining (knet_pretraining_fpn_8) checkpoint              |
+| (case B)                                  | and modified pretraining (knet_pretraining_fpn_8) checkpoint              |
 | video_knet_baseline_modified_training     | Video-K-Net training on Kitti-step dataset with modified model            |
-|                                           | (8 FPN layers) and pretraining baseline checkpoint                        |
+| (case C)                                  | (8 FPN layers) and pretraining baseline checkpoint                        |
+| knet_pretraining_fpn_8 (case D)           | K-Net training on Cityscapes dataset with increased FPN layers            |
+| video_knet_training_fpn_8 (case D)        | Video-K-Net training on Kitti-step dataset with increased FPN layers      |
 
 
 ## Citing Video K-Net
