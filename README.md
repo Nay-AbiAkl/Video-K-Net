@@ -50,13 +50,13 @@ As stated in our project milestone, we added two contributions to the original V
 
 1. Increase the FPN layers up to P8 to improve the segmentation accuracy. This was done for the pretraining of the K-Net and for the training of the Video-K-Net model. In fact, to be able to compare with the baseline model, we performed the following experiments:
 
-Case A - Baseline: we use the pretrained K-Net model checkpoint and train the Video-K-Net model as is without any modifications.
+    Case A - Baseline: we use the pretrained K-Net model checkpoint and train the Video-K-Net model as is without any modifications.
 
-Case B - Modified pretraining: we pre-train a modified K-Net model with increased FPN layers (8 layers) and train the Video-K-Net model (with the obtained checkpoint) as is without any modification.
+    Case B - Modified pretraining: we pre-train a modified K-Net model with increased FPN layers (8 layers) and train the Video-K-Net model (with the obtained checkpoint) as is without any modification.
 
-Case C - Modified training: we use the pretrained K-Net model checkpoint and train a modified Video-K-Net model with increased FPN layers (8 layers).
+    Case C - Modified training: we use the pretrained K-Net model checkpoint and train a modified Video-K-Net model with increased FPN layers (8 layers).
 
-Case D - Modified training and pre-training: we pre-train a modified K-Net model with increased FPN layers (8 layers) and train a modified Video-K-Net model with increased FPN layers (8 layers) with the obtained checkpoint.
+    Case D - Modified training and pre-training: we pre-train a modified K-Net model with increased FPN layers (8 layers) and train a modified Video-K-Net model with increased FPN layers (8 layers) with the obtained checkpoint.
 
 
 2. Train on the Waymo dataset.
