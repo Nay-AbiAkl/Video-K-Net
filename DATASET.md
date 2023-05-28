@@ -108,9 +108,31 @@ In the following, we provide a step-by-step walk through to prepare the data.
 
 Make sure to change the paths in the mentioned script to the directories where the data was downloaded.
 
-## Cityscapes dataset for pretraining K-Net
 
-### Cityscapes dataset
+# Waymo dataset for training Video-K-Net
+
+## Waymo dataset 
+
+## Prepare Waymo dataset for training and evaluation
+
+In order to train Video-Knet on Waymo, we had to pre-process it from scratch to match the format of the Kitti-step dataset. All the datasets trained on Video-Knet are processed to match the CoCo format including Kitti-step and Cityscape. So, we followed the same formatting by making use of the Waymo Open package. We believe this is a contribution to the community as we did not find any source online that does that from scratch. Therefore, the following files were added.
+
+
+To convert Waymo to Kitti format:
+```waymo_tools/Convert_waymo_to_kitti.ipynb```
+
+The tfrecords used for the training dataset:
+```waymo_tools/waymo.txt```
+
+To ensure we have RGB and panoptic pairs of images:
+```waymo_tools/check_image_pairs.py```
+
+To delete the fourth and fifth camera views:
+```waymo_tools/extract_cam_data.py```
+
+# Cityscapes dataset for pretraining K-Net
+
+## Cityscapes dataset
 
 Cityscapes dataset is a high-resolution road-scene dataset which contains 19 classes. 
 (8 thing classes and 11 stuff classes). 2975 images for training, 500 images for validation and 1525 images for testing.
@@ -139,7 +161,7 @@ cityscapes/
     test/
 ```
 
-### Preparing Cityscapes dataset for pretraining
+## Preparing Cityscapes dataset for pretraining
 
 Install cityscapes scripts by:
 
