@@ -31,5 +31,6 @@ As explained in the README.md, training the model on Waymo dataset was done once
 |---------------------|-----------------|-----------|-----------|
 | 5 camera views      | Kitti-step      | 0.527     | 0.300     |
 | 3 camera views      | Kitti-step      | 0.525     | 0.288     |
-| 5 camera views      | Waymo           | 0.     | 0.     |
-| 3 camera views      | Waymo           | 0.     | 0.     |
+| 5 camera views      | Waymo           | 0.170     | 0.211     |
+| 3 camera views      | Waymo           | 0.165     | 0.195     |
+
