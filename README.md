@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project aims to further enhance the performance of the Video-Knet framework for video panoptic segmentation (VPS). Our main approach involves augmenting the FPN layers, with the objective of achieving improved STQ and VPQ results. To do this, we pretrain the backbone on the Cityscape and train and test on the Kitti-Step dataset. Additionally, we plan to evaluate the effectiveness of the latest VPS dataset, which is the Waymo Open Data, by applying it to the Video-Knet framework. Furthermore, we aim to test the generalisation capabilities of the model when trained on the different dataset by cross testing the model trained on the Waymo dataset on the Kitti-step dataset and vice versa.
+This project aims to further enhance the performance of the Video-K-Net model for video panoptic segmentation VPS. Our main approach involves augmenting the FPN layers, with the objective improving STQ and VPQ results. To do this, we pretrain the backbone on the Cityscapes dataset and train and test on the Kitti-Step dataset. Additionally, we plan to evaluate the effectiveness of the latest VPS dataset, which is the Waymo Open Dataset, by training the Video-K-Net model on it. Furthermore, we aim to test the generalisation capabilities of the model when trained on the different datasets by cross testing the model trained on the Waymo dataset on the Kitti-step dataset and vice versa.
 
 ### Environment and DataSet Preparation 
 

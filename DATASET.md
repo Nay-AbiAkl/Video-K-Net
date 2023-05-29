@@ -112,7 +112,7 @@ Make sure to change the paths in the mentioned script to the directories where t
 # Waymo dataset for training Video-K-Net
 
 ## Waymo dataset 
-The Waymo Open dataset is one of the largest datasets for autonomous driving. Its perception dataset contains 2030 different scenes and its motion dataset has 103,354 scenes for object trajectories and 3D maps. The panoptic segemntation task was just recently added to the perception dataset with 100k labelled images for video panoptic segmentation making it the largest dataset available for video panoptic segmentation. Additionally, it is the only dataset that has multiple camera views as it provides images for 5 different camera views: front, front-left, front-right, side-left, side-right. The dataset has 29 labels shown below:
+The Waymo Open dataset is one of the largest datasets for autonomous driving. Its perception dataset contains 2030 different scenes and its motion dataset has 103,354 scenes for object trajectories and 3D maps. The panoptic segmentation task was just recently added to the perception dataset with 100k labeled images for video panoptic segmentation making it the largest dataset available for video panoptic segmentation. Additionally, it is the only dataset that has multiple camera views as it provides images for 5 different camera views: front, front-left, front-right, side-left, side-right. The dataset has 29 labels shown below:
 
 Label Name           | Label ID
 -------------------  | --------
@@ -147,7 +147,7 @@ dynamic                | 27
 static                 | 28
 ## Prepare Waymo dataset for training and evaluation
 
-In order to train Video-Knet on Waymo, we had to pre-process it from scratch to match the format of the Kitti-step dataset. All the datasets trained on Video-Knet are processed to match the CoCo format including Kitti-step and Cityscape. So, we followed the same formatting by making use of the Waymo Open package. We believe this is a contribution to the community as we did not find any source online that does that from scratch. Therefore, the following files were added. 
+In order to train Video-Knet on Waymo, we had to pre-process it from scratch to match the format of the Kitti-step dataset. All the datasets trained on Video-K-Net are processed to match the COCO format including Kitti-step and Cityscapes. So, we followed the same formatting by making use of the Waymo Open Package. We believe this is a contribution to the community as we did not find any source online that does that from scratch. Therefore, the following files were added. 
 
 
 To convert Waymo to Kitti format:
@@ -162,7 +162,7 @@ To ensure we have RGB and panoptic pairs of images:
 To delete the fourth and fifth camera views:
 ```waymo_tools/extract_cam_data.py```
 
-It is worth-noting that to convert Waymo to Kitti, we obtained the semantic and instance labels of the Waymo images and we created the global instance mapping that is consistant throughout the same sequence and across the different cameras. Additionally, the Waymo semantic labels were mapped to the Kitti ones. Some of the labels of Waymo were combined because they are not available in Kitti such as lane marker and road marker were both labelled to road. However, the other way around was not done, if a label exists in Kitti but not in Waymo, the label would be assigned to "void". This is a limitation of this technique because for example a fence exists in kitti as a label but in Waymo it is assigned, along with many other objects, to static. In Waymo, static cars could also be assigned to static but in Kitti, it is assigned as a car. Therefore, the segmentation could be affected by this difference in annotations. 
+It is worth-noting that to convert Waymo to Kitti, we obtained the semantic and instance labels of the Waymo images and we created the global instance mapping that is consistent throughout the same sequence and across the different cameras. Additionally, the Waymo semantic labels were mapped to the Kitti ones. Some of the labels of Waymo were combined because they are not available in Kitti such as lane marker and road marker were both labeled as road. However, the other way around was not done, if a label exists in Kitti but not in Waymo, the label would be assigned to "void". This is a limitation of this technique because for example, a fence exists in kitti as a label but in Waymo it is assigned, along with many other objects, to static. In Waymo, static cars could also be assigned to static but in Kitti, it is assigned as a car. Therefore, the segmentation could be affected by this difference in annotations. 
 
 # Cityscapes dataset for pretraining K-Net
 
