@@ -1,14 +1,8 @@
-# Video Panoptic Segmentation 
+# Video Panoptic Segmentation - Group 18
 
-## Video K-Net 
+## Introduction
 
-In our project, we use Video K-Net: a simple, strong, and unified framework for fully end-to-end dense video segmentation. 
-The method is built upon K-Net, a method of unifying image segmentation via a group of learnable kernels.
-[Paper](https://arxiv.org/abs/2204.04656), [Sides](./slides/Video-KNet-cvpr-slides-10-25-version.pptx), [Poster](./slides/cvpr22_poster_lxt_zww_pjm.pdf), [Video](https://www.youtube.com/watch?v=LIEyp_czu20&t=3s)
-
-
-This project contains the training and testing code of Video K-Net for VPS (Video Panoptic Segmentation).
-
+This project aims to further enhance the performance of the Video-Knet framework for video panoptic segmentation (VPS). Our main approach involves augmenting the FPN layers, with the objective of achieving improved STQ and VPQ results. To do this, we pretrain the backbone on the Cityscape and train and test on the Kitti-Step dataset. Additionally, we plan to evaluate the effectiveness of the latest VPS dataset, which is the Waymo Open Data, by applying it to the Video-Knet framework. Furthermore, we aim to test the generalisation capabilities of the model when trained on the different dataset by cross testing the model trained on the Waymo dataset on the Kitti-step dataset and vice versa.
 
 ### Environment and DataSet Preparation 
 
@@ -28,13 +22,12 @@ We have also built a [docker image]() with all these requirements for ease of us
 sh ./tools/slurm_train.sh $PARTITION knet_step configs/det/knet_cityscapes_step/knet_s3_r50_fpn.py $WORK_DIR --no-validate
 ```
 
-2. To train the Video K-Net on KITTI-STEP.
+2. To train the Video K-Net.
 
 ```bash
 # train Video K-Net on KITTI-step using R-50
 GPUS=8 sh ./tools/slurm_train.sh $PARTITION video_knet_step configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step_sigmoid_stride2_mask_embed_link_ffn_joint_train.py $WORK_DIR --no-validate --load-from /path_to_pretraining_checkpoint
 ```
-
 
 3. Testing.
 
@@ -43,6 +36,9 @@ We provide both VPQ and STQ metrics to evaluate VPS models. The colored segmenta
 ```bash
 sh ./tools/inference_kitti_step.sh ./configs/det/video_knet_kitti_step/video_knet_s3_r50_rpn_1x_kitti_step__sigmoid_stride2_mask_embed_link_ffn_joint_train.py $MODEL_DIR $OUT_DIR 
 ```
+
+To train and test on Kitti-Step, use the main branch. To train and test on Waymo, use the Waymo branch.
+
 
 Since the images are saved, we also added a script to make a video out of them for better visualization. Make sure to set the correct path to the saved images directory.
 
@@ -91,12 +87,24 @@ The checkpoints for our pretraining and training can be found in [this folder](h
 | video_knet_training_fpn_8 (case D)        | Video-K-Net training on Kitti-step dataset with increased FPN layers      |
 
 
-## Citing Video K-Net
+## References 
 
-NIPS-2021, K-Net: Unified Segmentation: Our Image baseline (https://github.com/ZwwWayne/K-Net)
+Git repos:
 
-ECCV-2022, PolyphonicFormer: A Unified Framework For Panoptic Segmentation + Depth Estimation (winner of ICCV-2021 BMTT workshop)
-(https://github.com/HarborYuan/PolyphonicFormer)
+Video-Knet:
+https://github.com/lxtGH/Video-K-Net
+
+Waymo:
+https://github.com/waymo-research/waymo-open-dataset.git
+
+
+Papers:
+
+[Video K-Net: A Simple, Strong, and Unified Baseline for Video Segmentation](https://arxiv.org/abs/2204.04656)
+
+[Waymo Open Dataset: Panoramic Video Panoptic Segmentation](https://arxiv.org/abs/2206.07704)
+
+Bibtex:
 
 ```bibtex
 @inproceedings{li2022videoknet,
@@ -111,6 +119,15 @@ ECCV-2022, PolyphonicFormer: A Unified Framework For Panoptic Segmentation + Dep
   author={Zhang, Wenwei and Pang, Jiangmiao and Chen, Kai and Loy, Chen Change},
   journal={NeurIPS},
   year={2021}
+}
+
+@misc{mei2022waymo,
+      title={Waymo Open Dataset: Panoramic Video Panoptic Segmentation}, 
+      author={Jieru Mei and Alex Zihao Zhu and Xinchen Yan and Hang Yan and Siyuan Qiao and Yukun Zhu and Liang-Chieh Chen and Henrik Kretzschmar and Dragomir Anguelov},
+      year={2022},
+      eprint={2206.07704},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
 }
 ```
 
