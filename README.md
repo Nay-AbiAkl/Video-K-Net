@@ -75,16 +75,18 @@ As stated in our project milestone, we added two contributions to the original V
 The checkpoints for our pretraining and training can be found in [this folder](https://drive.google.com/drive/folders/1l1rVqQaE6VCfgHc50QEUXW-4EbYqokN2?usp=sharing) on Google Drive.
 
 
-| Checkpoint name                           | Refers to                                                                 |
-|-------------------------------------------|---------------------------------------------------------------------------|
-| video_knet_baseline (case A)              | Video-K-Net training on Kitti-step dataset with baseline model            |
-|                                           | and pretraining baseline checkpoint                                       |
-| video_knet_baseline_modified_pretraining  | Video-K-Net training on Kitti-step dataset with baseline model            |
-| (case B)                                  | and modified pretraining (knet_pretraining_fpn_8) checkpoint              |
-| video_knet_baseline_modified_training     | Video-K-Net training on Kitti-step dataset with modified model            |
-| (case C)                                  | (8 FPN layers) and pretraining baseline checkpoint                        |
-| knet_pretraining_fpn_8 (case D)           | K-Net training on Cityscapes dataset with increased FPN layers            |
-| video_knet_training_fpn_8 (case D)        | Video-K-Net training on Kitti-step dataset with increased FPN layers      |
+| Checkpoint name                            | Refers to                                                                 |
+|--------------------------------------------|---------------------------------------------------------------------------|
+| video_knet_baseline (case A)               | Video-K-Net training on Kitti-step dataset with baseline model            |
+|                                            | and pretraining baseline checkpoint                                       |
+| video_knet_baseline_modified_pretraining   | Video-K-Net training on Kitti-step dataset with baseline model            |
+| (case B)                                   | and modified pretraining (knet_pretraining_fpn_8) checkpoint              |
+| video_knet_baseline_modified_training      | Video-K-Net training on Kitti-step dataset with modified model            |
+| (case C)                                   | (8 FPN layers) and pretraining baseline checkpoint                        |
+| knet_pretraining_fpn_8 (case D)            | K-Net training on Cityscapes dataset with increased FPN layers            |
+| video_knet_training_fpn_8 (case D)         | Video-K-Net training on Kitti-step dataset with increased FPN layers      |
+| video_knet_training_waymo_5_cameras        | Video-K-Net training on Waymo dataset with 5 camera views                 |
+| video_knet_training_waymo_3_cameras        | Video-K-Net training on Waymo dataset with 3 camera views                 |
 
 
 ## References 

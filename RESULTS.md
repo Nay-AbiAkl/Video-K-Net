@@ -24,3 +24,12 @@ It also seems that increasing the layers for the Video-K-Net model during traini
 
 
 ## Contribution 2: Waymo dataset training
+
+As explained in the README.md, training the model on Waymo dataset was done once with all 5 camera views, and once with only 3 camera views (front, front-left and front-right).
+
+| Approach            | Dataset         | STQ       |  VPQ      |
+|---------------------|-----------------|-----------|-----------|
+| 5 camera views      | Kitti-step      | 0.527     | 0.300     |
+| 3 camera views      | Kitti-step      | 0.525     | 0.288     |
+| 5 camera views      | Waymo           | 0.     | 0.     |
+| 3 camera views      | Waymo           | 0.     | 0.     |
